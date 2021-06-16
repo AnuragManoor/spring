@@ -15,10 +15,10 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Excel{
-	 public static void main(String[] args) throws ParseException {
-	        String jdbcURL = "jdbc:oracle:thin:@localhost:1521:orcl";
-	        String username = "system";
-	        String password = "#Padmaja71";
+	 public static void main(String[] args) throws ParseException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	        String jdbcURL = "jdbc:mysql://localhost:3306/anudb";
+	        String username = "root";
+	        String password = "#Anurag123";
 	 
 	        String excelFilePath = "C:\\Users\\Anurag\\Desktop\\Book4.xlsx";
 	 
@@ -35,11 +35,11 @@ public class Excel{
 	 
 	            Sheet firstSheet = workbook.getSheetAt(0);
 	            Iterator<Row> rowIterator = firstSheet.iterator();
-	 
+	          
 	            connection = DriverManager.getConnection(jdbcURL, username, password);
 	            connection.setAutoCommit(false);
 	  
-	            String sql = "INSERT INTO stock59 (Time,Symbol,Putorcall,Sentiment,OptionSymbol,TradeType,DTE,StrikePrice,Capa,TradeCount,TotalTradePrice,Option_Price,OI,Volume,VolByOI,modifiedOptionSymbol) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+	            String sql = "INSERT INTO stock88 (Time,Symbol,Putorcall,Sentiment,OptionSymbol,TradeType,DTE,StrikePrice,Capa,TradeCount,TotalTradePrice,Option_Price,OI,Volume,VolByOI,modifiedOptionSymbol) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 	            PreparedStatement statement = connection.prepareStatement(sql);    
 	             
 	            int count = 0;
@@ -78,20 +78,27 @@ public class Excel{
 	                    case 4:
 	                    	 String OptionSymbol = nextCell.getStringCellValue();
 		                        statement.setString(5, OptionSymbol);
-		                        
-		                      //1.append dot at the front
 		                        String modifiedOptionSymbol="."+OptionSymbol;
+		                        String x2=null;
+		                        String x3=null;
 		                       if(modifiedOptionSymbol.contains("C000")||modifiedOptionSymbol.contains("C00")||modifiedOptionSymbol.contains("C00")||modifiedOptionSymbol.contains("C0")||modifiedOptionSymbol.contains("P0000")||modifiedOptionSymbol.contains("P000")||modifiedOptionSymbol.contains("P00")||modifiedOptionSymbol.contains("P0")) {
 		                        	String x1=modifiedOptionSymbol.replaceAll("C000","C" ).replaceAll("C00", "C").replaceAll("C0","C").replaceAll("P0000", "P").replaceAll("P000","P").replaceAll("P00","P").replaceAll("P0","P");
-		                           String x2=x1.replaceAll("()\\.0+$|(\\..+?)0+$","$2");
-		                           String x3=x2.concat(".");
-		                        //3.Extract last 3 digits,then remove trailing zeros
+		                         x2=x1.substring(0,x1.length()-3);
+		                    		 x3=x1.substring(x1.length()-3,x1.length());
+		                    		if(x3.equals("000")) {
+		                    			 statement.setString(16,x2);}
+		                    		else {
+		                    			 String x5=x2+"."+x3;
+				                    	   String x6=x5.replaceAll("()\\.0+$|(\\..+?)0+$","$2");
+				                    	   statement.setString(16,x6);
+		                   	}
+                     //3.Extract last 3 digits,then remove trailing zeros
 		                        //4 if all zeros remove entirely else append . infront
-		                        statement.setString(16,x3);
+		                      
 		                       }
-		                       else {
-		                    	   statement.setString(16,modifiedOptionSymbol);
-		                       }
+
+		                     
+		                      
 		                        break;
 	                    case 5:
 	                    	 String TradeType = nextCell.getStringCellValue();
