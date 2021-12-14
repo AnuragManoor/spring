@@ -17,12 +17,8 @@ public static void main(String[] args) throws InterruptedException, IOException
 {
 System.setProperty("webdriver.edge.driver","C:\\Users\\19031380\\MS Edge\\msedgedriver.exe");
 MX0222 t = new MX0222();
-WebDriver driver= new EdgeDriver();
-driver.get("https://its-wwwtest.carestreamhealth.com/en/US/store/US-0110/");
-driver.findElement(By.xpath("//*[@class='header_login_link']")).click();
-driver.findElement(By.id("j_username")).sendKeys("t.jeffrey.nelson@carestream.com");
-driver.findElement(By.id("j_password")).sendKeys("password123");
-driver.findElement(By.id("signInBtn")).click();
+t.login();
+
 Select dropdown = new Select (driver.findElement(By.id("customerB2BUnit")));
 dropdown.selectByVisibleText("MEDICA SILLER, SA DE CV(0000566823)");
 WebDriverWait wait = new WebDriverWait(driver,5);
