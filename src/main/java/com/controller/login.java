@@ -24,10 +24,12 @@ public class login {
 public static void login()
 {
 	driver=new EdgeDriver();
-	driver.get("https://its-wwwtest.carestreamhealth.com/en/US/store/US-0110/");
+	driver.get("https://hcs2-hybrisadmin.carestreamhealth.com/en/US/store/US-0110/");
 	driver.findElement(By.xpath("//*[@class='header_login_link']")).click();
-	driver.findElement(By.id("j_username")).sendKeys("t.jeffrey.nelson@carestream.com");
+	driver.findElement(By.id("j_username")).sendKeys("anurag.manoor@lntinfotech.com");
 	driver.findElement(By.id("j_password")).sendKeys("password123");
+	
 	driver.findElement(By.id("signInBtn")).click();
+	driver.manage().window().maximize();
 }
 }
